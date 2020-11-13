@@ -1,4 +1,4 @@
-"""A bot for discord.
+"""A bot for discord. Needs python3.6
 
 To add bot:
 
@@ -40,12 +40,11 @@ if not TOKEN:
 
 
 intents = discord.Intents(messages=True, members=True, guilds=True)
-bot = commands.Bot(command_prefix='!', intents=intents)
+bot = commands.Bot(command_prefix='--', intents=intents)
 
 
 @bot.command(name="hello")
 async def on_message(ctx):
-    # we do not want the bot to reply to itself
     msg = f'Hello {ctx.author.mention}'
     await ctx.send(msg)
 
@@ -56,25 +55,18 @@ async def on_shuffle(ctx):
     random.shuffle(civilizations)
     result = ["The random civilizations:"]
     i = 0
-    await ctx.guild.chunk()
-
     for member in ctx.guild.members:
         if member.bot:
             continue
         civ = civilizations[i]
         i += 1
         result.append(f"{member.mention}, Civilization: {civ}   {CIVILIZATIONS[civ]}")
-        # await ctx.send(f"{member.mention} your civ is {civilizations[i]} :flag_gb:")
-
-    # rows = "\n".join(result)
-    # msg = f"""The random civilization for each one:
-    # ```{rows}```
-    # """
     await ctx.send("\n".join(result))
 
 
 @bot.event
 async def on_ready():
     print(f'{bot.user.name} has connected to Discord!')
+
 
 bot.run(TOKEN)
